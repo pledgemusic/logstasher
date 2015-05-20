@@ -13,6 +13,8 @@ module LogStasher
       data.merge! extract_exception(payload)
       data.merge! extract_custom_fields(payload)
 
+      return if data['supress'] == true || data[:supress] == true
+
       tags = ['request']
       tags.push('exception') if payload[:exception]
       event = LogStash::Event.new(data.merge('source' => LogStasher.source, 'tags' => tags))
